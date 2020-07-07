@@ -11,7 +11,7 @@ router.post('/users/login',function(req,res,next){
       }
         bcrypt.compare(req.body.password,user.password,function(err,result){
             if(err){
-                res.status(401).json({message:'Authentication failed'})
+                res.status(401).json({message:'User not found'})
             }
             if(result){
               const token = jwt.sign({email:user.email},process.env.JWT_KEY,{expiresIn:'1h'})
