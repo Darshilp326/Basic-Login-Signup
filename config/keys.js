@@ -1,5 +1,6 @@
 module.exports = {
-    mongoDB:{
-        dbURL: 'mongodb+srv://darshilp326:amisha1974@cluster0-9434z.mongodb.net/test?retryWrites=true&w=majority'
-    }
+  mongoDB: {
+    dbURL:
+      "mongodb+srv://darshil:12345@cluster0-9434z.mongodb.net/test?retryWrites=true&w=majority",
+  },
 };
