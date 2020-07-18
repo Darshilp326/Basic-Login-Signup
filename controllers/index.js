@@ -1,1 +1,3 @@
-module.exports.userController = require("./users");
+module.exports.userController = require("./patients");
+module.exports.authController = require("./auth");
+module.exports.doctorController = require("./doctors");
