@@ -1,6 +1,6 @@
 const userRoute = require("./patients");
 const doctorRoute = require("./doctors");
-const recordroute = require("./records");
+const recordRoute = require("./records");
 const express = require("express");
 const router = express.Router();
 
