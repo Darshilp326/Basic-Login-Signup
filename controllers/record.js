@@ -27,6 +27,16 @@ const addPrescription = async (req, res) => {
   await record.save();
   res.status(200).json(record);
 };
+const getPrescription = async (req, res) => {
+  const patient = req.user.id;
+  const record = Record.findOne({ patient });
+  if (!record) {
+    res.status(400).json({ msg: "You dont have any previous records" });
+  }
+  const { prescription } = record;
+  res.status(200).json({ prescription });
+};
 module.exports = {
   addPrescription,
+  getPrescription,
 };
