@@ -21,6 +21,8 @@ const addPrescription = async (req, res) => {
     name: req.body.name,
     numberOfDays: req.body.numberOfDays,
     doctor: req.user.id,
+    symptoms: req.body.symptoms,
+    weight: req.body.weight,
   });
   await record.save();
   res.status(200).json(record);

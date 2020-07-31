@@ -17,6 +17,12 @@ const recordSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Doctor",
       },
+      symptoms: {
+        type: String,
+      },
+      weight: {
+        type: Number,
+      },
     },
   ],
 });
