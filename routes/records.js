@@ -5,10 +5,10 @@ const { recordController, authController } = require("../controllers");
 router
   .route("/add")
   .post(authController.ensureAuthenticated, recordController.addPrescription);
-/*router
+router
   .route("/fetch")
   .get(authController.ensureAuthenticated, recordController.getRecord);
-router
+/*router
   .route("/update/:id")
   .put(authController.ensureAuthenticated, recordController.updateRecord);*/
 
