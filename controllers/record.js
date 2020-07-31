@@ -58,8 +58,10 @@ const getRecordsForDoctor = async (req, res) => {
   }
   res.status(200).json({ records });
 };
+
 module.exports = {
   addPrescription,
   getRecord,
   getRecordsForDoctor,
+  updateRecord,
 };
