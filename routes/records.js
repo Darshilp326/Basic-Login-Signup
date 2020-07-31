@@ -8,6 +8,12 @@ router
 router
   .route("/fetch")
   .get(authController.ensureAuthenticated, recordController.getRecord);
+router
+  .route("/fetch/doctor")
+  .post(
+    authController.ensureAuthenticated,
+    recordController.getRecordsForDoctor
+  );
 /*router
   .route("/update/:id")
   .put(authController.ensureAuthenticated, recordController.updateRecord);*/

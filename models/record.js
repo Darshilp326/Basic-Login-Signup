@@ -5,6 +5,9 @@ const recordSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Patient",
   },
+  patientEmail: {
+    type: String,
+  },
   prescription: [
     {
       name: String,

@@ -11,6 +11,7 @@ const addPrescription = async (req, res) => {
   if (!record) {
     const newRecord = new Record({
       patient: patientId,
+      patientEmail: email,
     });
     await newRecord.save();
   }
@@ -36,7 +37,29 @@ const getRecord = async (req, res) => {
   const { prescription } = record;
   res.status(200).json({ prescription });
 };
+const getRecordsForDoctor = async (req, res) => {
+  const { email } = req.body;
+  const record = await Record.findOne({ patientEmail: email });
+  if (!record) {
+    return res.status(400).json({ msg: "No record found for this email" });
+  }
+  // console.log(req.user.id);
+  const records = [];
+  record.prescription.map((prescription) => {
+    // console.log(prescription.doctor);
+    if (String(prescription.doctor) === String(req.user.id)) {
+      records.push(prescription);
+    }
+  });
+  if (records.length === 0) {
+    return res
+      .status(400)
+      .json({ msg: "No prescriptions present for this doctor" });
+  }
+  res.status(200).json({ records });
+};
 module.exports = {
   addPrescription,
   getRecord,
+  getRecordsForDoctor,
 };
