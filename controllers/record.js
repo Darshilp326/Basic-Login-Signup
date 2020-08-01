@@ -63,5 +63,4 @@ module.exports = {
   addPrescription,
   getRecord,
   getRecordsForDoctor,
-  updateRecord,
 };

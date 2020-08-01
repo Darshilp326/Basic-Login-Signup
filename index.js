@@ -1,14 +1,20 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+const path = require("path");
+dotenv.config();
 //const keys = require("./config/keys");
 //const DB_URI = keys.mongoDB.dbURL;
 // set up express app
 const app = express();
-require("dotenv").config();
+
+console.log(process.env.JWT_KEY);
 // connect to mongodb
+const DB_URI = process.env.MONGODB_URI;
+console.log(DB_URI);
 mongoose
-  .connect(process.env.MONGODB_URL, {
+  .connect(DB_URI, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
