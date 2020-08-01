@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 //const keys = require("./config/keys");
-const DB_URI = keys.mongoDB.dbURL;
+//const DB_URI = keys.mongoDB.dbURL;
 // set up express app
 const app = express();
 require("dotenv").config();
