@@ -1,14 +1,14 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const keys = require("./config/keys");
+//const keys = require("./config/keys");
 const DB_URI = keys.mongoDB.dbURL;
 // set up express app
 const app = express();
 require("dotenv").config();
 // connect to mongodb
 mongoose
-  .connect(DB_URI, {
+  .connect(process.env.MONGODB_URL, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
