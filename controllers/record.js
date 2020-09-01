@@ -17,6 +17,7 @@ const addPrescription = async (req, res) => {
       symptoms: req.body.symptoms,
       medicines: req.body.medicines,
       doctor: req.user.id,
+      patient: patientId,
     });
     await newPrescription.save();
     prescription.push(newPrescription.id);
@@ -34,6 +35,7 @@ const addPrescription = async (req, res) => {
       symptoms: req.body.symptoms,
       medicines: req.body.medicines,
       doctor: req.user.id,
+      patient: patientId,
     });
     await newPrescription.save();
     const record = await Record.findOne({ patient: patientId });
@@ -78,9 +80,44 @@ const getRecordsForDoctor = async (req, res) => {
   }
   res.status(200).json({ records });
 };
-
+const updatePrescription = async (req, res) => {
+  try {
+    console.log(req.body.medicines);
+    const id = req.params.id;
+    const result = await Prescription.findById(id);
+    if (!result) {
+      return res.status(404).json({ msg: "Prescription not found!" });
+    }
+    console.log(result.doctor);
+    console.log(result.patient);
+    console.log(req.user.id);
+    if (
+      String(result.patient) === String(req.user.id) ||
+      String(result.doctor) === String(req.user.id)
+    ) {
+      console.log("Hello");
+      const response = await Prescription.findByIdAndUpdate(
+        id,
+        {
+          date: req.body.date,
+          weight: req.body.weight,
+          symptoms: req.body.symptoms,
+          medicines: req.body.medicines,
+        },
+        { new: true }
+      );
+      return res.status(200).json(response);
+    }
+    return res
+      .status(403)
+      .json({ msg: "Not authorized to update prescription" });
+  } catch (e) {
+    return res.status(400).json({ msg: "Internal server error" });
+  }
+};
 module.exports = {
   addPrescription,
   getRecord,
   getRecordsForDoctor,
+  updatePrescription,
 };
