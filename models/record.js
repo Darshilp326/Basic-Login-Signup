@@ -8,24 +8,10 @@ const recordSchema = new mongoose.Schema({
   patientEmail: {
     type: String,
   },
-  prescription: [
+  prescriptions: [
     {
-      name: String,
-      numberOfDays: Number,
-      Date: {
-        type: Date,
-        default: Date.now,
-      },
-      doctor: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Doctor",
-      },
-      symptoms: {
-        type: String,
-      },
-      weight: {
-        type: Number,
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Prescription",
     },
   ],
 });

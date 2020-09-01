@@ -1,6 +1,12 @@
 const { Record, User } = require("../models");
-
 const addPrescription = async (req, res) => {
+  const { email } = req.body;
+  const patient = await User.findOne({ email });
+  if (!patient) {
+    return res.status(400).json({ msg: "Patient not found!" });
+  }
+};
+/*const addPrescription = async (req, res) => {
   const { email } = req.body;
   const patient = await User.findOne({ email });
   if (!patient) {
@@ -27,7 +33,7 @@ const addPrescription = async (req, res) => {
   });
   await record.save();
   res.status(200).json(record);
-};
+};*/
 const getRecord = async (req, res) => {
   const patient = req.user.id;
   const record = await Record.findOne({ patient });
