@@ -1,12 +1,8 @@
-const { Record, User } = require("../models");
+const { Record, User, Prescription } = require("../models");
+
+/*Add prescription to our records database*/
 const addPrescription = async (req, res) => {
-  const { email } = req.body;
-  const patient = await User.findOne({ email });
-  if (!patient) {
-    return res.status(400).json({ msg: "Patient not found!" });
-  }
-};
-/*const addPrescription = async (req, res) => {
+  const prescription = [];
   const { email } = req.body;
   const patient = await User.findOne({ email });
   if (!patient) {
@@ -15,43 +11,61 @@ const addPrescription = async (req, res) => {
   const patientId = patient.id;
   let record = await Record.findOne({ patient: patientId });
   if (!record) {
+    const newPrescription = new Prescription({
+      date: req.body.date,
+      weight: req.body.weight,
+      symptoms: req.body.symptoms,
+      medicines: req.body.medicines,
+      doctor: req.user.id,
+    });
+    await newPrescription.save();
+    prescription.push(newPrescription.id);
     const newRecord = new Record({
       patient: patientId,
-      patientEmail: email,
+      patientEmail: req.body.email,
+      prescriptions: prescription,
     });
     await newRecord.save();
+    res.status(200).json(newRecord);
+  } else {
+    const newPrescription = new Prescription({
+      date: req.body.date,
+      weight: req.body.weight,
+      symptoms: req.body.symptoms,
+      medicines: req.body.medicines,
+      doctor: req.user.id,
+    });
+    await newPrescription.save();
+    const record = await Record.findOne({ patient: patientId });
+    console.log(record);
+    record.prescriptions.push(newPrescription.id);
+    await record.save();
+    res.status(200).json({ record });
   }
-
-  record = await Record.findOne({ patient: patientId });
-  console.log(record);
-  record.prescription.push({
-    name: req.body.name,
-    numberOfDays: req.body.numberOfDays,
-    doctor: req.user.id,
-    symptoms: req.body.symptoms,
-    weight: req.body.weight,
-  });
-  await record.save();
-  res.status(200).json(record);
-};*/
+};
+/*Get all records of patient for himself*/
 const getRecord = async (req, res) => {
   const patient = req.user.id;
-  const record = await Record.findOne({ patient });
+  const record = await Record.findOne({ patient }).populate("prescriptions");
   if (!record) {
     res.status(400).json({ msg: "You dont have any previous records" });
   }
-  const { prescription } = record;
-  res.status(200).json({ prescription });
+  res.status(200).json({ record });
 };
+
+/*Get all records of patient for a doctor*/
 const getRecordsForDoctor = async (req, res) => {
   const { email } = req.body;
-  const record = await Record.findOne({ patientEmail: email });
+  const record = await Record.findOne({ patientEmail: email }).populate(
+    "prescriptions"
+  );
+  console.log(record);
   if (!record) {
     return res.status(400).json({ msg: "No record found for this email" });
   }
   // console.log(req.user.id);
   const records = [];
-  record.prescription.map((prescription) => {
+  record.prescriptions.map((prescription) => {
     // console.log(prescription.doctor);
     if (String(prescription.doctor) === String(req.user.id)) {
       records.push(prescription);

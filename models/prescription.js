@@ -1,8 +1,12 @@
 const mongoose = require("mongoose");
 
 const prescriptionSchema = new mongoose.Schema({
+  patient: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
   Date: {
-    type: Date,
+    type: String,
   },
   weight: {
     type: Number,
