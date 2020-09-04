@@ -130,15 +130,18 @@ const deletePrescription = async (req, res) => {
     return res.status(404).json({ msg: "internal Server error" });
   }
 };
+// Get all patients of a specific doctor
 const getAllPatientsOfASpecificDoctor = async (req, res) => {
-  const doctor = await Doctor.findById(req.user.id);
-  console.log(doctor);
+  const doctor = await Doctor.findById(req.user.id).populate("patients");
+  //console.log(doctor);
   if (!doctor) {
     return res.status(404).json({ msg: "Doctor not found!" });
   }
   const { patients } = doctor;
+
   return res.status(200).json({ patients });
 };
+
 module.exports = {
   addPrescription,
   getRecord,
