@@ -23,4 +23,10 @@ router
     authController.ensureAuthenticated,
     recordController.getAllPatientsOfASpecificDoctor
   );
+router
+  .route("/delete/:id")
+  .delete(
+    authController.ensureAuthenticated,
+    recordController.deletePrescription
+  );
 module.exports = router;

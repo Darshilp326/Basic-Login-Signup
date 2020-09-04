@@ -1,4 +1,5 @@
 const { Record, User, Prescription, Doctor } = require("../models");
+const prescription = require("../models/prescription");
 
 /*Add prescription to our records database*/
 const addPrescription = async (req, res) => {
@@ -126,7 +127,20 @@ const updatePrescription = async (req, res) => {
 };
 const deletePrescription = async (req, res) => {
   try {
+    const id = req.params.id;
+    let response = await Prescription.findById(id);
+    console.log(response);
+    if (String(req.user.id) !== String(response.doctor)) {
+      res.status(403).json({ msg: "Not Authorized to delete prescription" });
+    }
+    response = await Prescription.findByIdAndDelete(id);
+    const record = await Record.findOne({ patient: response.patient });
+    const index = record.prescriptions.indexOf(record.id);
+    record.prescriptions.splice(index, 1);
+    await record.save();
+    return res.status(200).json({ record });
   } catch (e) {
+    console.log(e.message);
     return res.status(404).json({ msg: "internal Server error" });
   }
 };
