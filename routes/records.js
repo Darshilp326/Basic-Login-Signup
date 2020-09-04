@@ -17,5 +17,10 @@ router
 router
   .route("/update/:id")
   .put(authController.ensureAuthenticated, recordController.updatePrescription);
-
+router
+  .route("/get/patients")
+  .get(
+    authController.ensureAuthenticated,
+    recordController.getAllPatientsOfASpecificDoctor
+  );
 module.exports = router;

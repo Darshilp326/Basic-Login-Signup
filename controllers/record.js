@@ -1,4 +1,4 @@
-const { Record, User, Prescription } = require("../models");
+const { Record, User, Prescription, Doctor } = require("../models");
 
 /*Add prescription to our records database*/
 const addPrescription = async (req, res) => {
@@ -9,6 +9,13 @@ const addPrescription = async (req, res) => {
     return res.status(400).json({ msg: "Patient not found!" });
   }
   const patientId = patient.id;
+  const doctor = await Doctor.findById(req.user.id);
+  console.log(doctor);
+  const index = doctor.patients.find((id) => patientId === id);
+  if (index === undefined) {
+    doctor.patients.push(patientId);
+  }
+  await doctor.save();
   let record = await Record.findOne({ patient: patientId });
   if (!record) {
     const newPrescription = new Prescription({
@@ -80,6 +87,8 @@ const getRecordsForDoctor = async (req, res) => {
   }
   res.status(200).json({ records });
 };
+
+/*Update any prescription*/
 const updatePrescription = async (req, res) => {
   try {
     console.log(req.body.medicines);
@@ -115,9 +124,26 @@ const updatePrescription = async (req, res) => {
     return res.status(400).json({ msg: "Internal server error" });
   }
 };
+const deletePrescription = async (req, res) => {
+  try {
+  } catch (e) {
+    return res.status(404).json({ msg: "internal Server error" });
+  }
+};
+const getAllPatientsOfASpecificDoctor = async (req, res) => {
+  const doctor = await Doctor.findById(req.user.id);
+  console.log(doctor);
+  if (!doctor) {
+    return res.status(404).json({ msg: "Doctor not found!" });
+  }
+  const { patients } = doctor;
+  return res.status(200).json({ patients });
+};
 module.exports = {
   addPrescription,
   getRecord,
   getRecordsForDoctor,
   updatePrescription,
+  deletePrescription,
+  getAllPatientsOfASpecificDoctor,
 };

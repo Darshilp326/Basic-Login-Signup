@@ -25,5 +25,10 @@ const prescriptionSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Doctor",
   },
+  status: {
+    type: String,
+    enum: ["active", "inactive"],
+    default: "active",
+  },
 });
 module.exports = mongoose.model("Prescription", prescriptionSchema);
