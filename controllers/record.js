@@ -11,8 +11,10 @@ const addPrescription = async (req, res) => {
   }
   const patientId = patient.id;
   const doctor = await Doctor.findById(req.user.id);
-  console.log(doctor);
-  const index = doctor.patients.find((id) => patientId === id);
+  //console.log(doctor);
+  //console.log(doctor.patients);
+  const index = doctor.patients.find((id) => String(patientId) === String(id));
+  console.log(index);
   if (index === undefined) {
     doctor.patients.push(patientId);
   }
@@ -47,7 +49,7 @@ const addPrescription = async (req, res) => {
     });
     await newPrescription.save();
     const record = await Record.findOne({ patient: patientId });
-    console.log(record);
+    //console.log(record);
     record.prescriptions.push(newPrescription.id);
     await record.save();
     res.status(200).json({ record });
