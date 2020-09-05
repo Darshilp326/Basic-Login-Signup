@@ -157,7 +157,14 @@ const getAllPatientsOfASpecificDoctor = async (req, res) => {
 
   return res.status(200).json({ patients });
 };
-
+const getPrescriptionById = async (req, res) => {
+  const id = req.params.id;
+  const response = await Prescription.findById(id);
+  if (!response) {
+    return res.status(404).json({ msg: "Prescription not found!" });
+  }
+  return res.status(200).json({ response });
+};
 module.exports = {
   addPrescription,
   getRecord,
@@ -165,4 +172,5 @@ module.exports = {
   updatePrescription,
   deletePrescription,
   getAllPatientsOfASpecificDoctor,
+  getPrescriptionById,
 };

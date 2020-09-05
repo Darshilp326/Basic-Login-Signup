@@ -15,6 +15,12 @@ router
     recordController.getRecordsForDoctor
   );
 router
+  .route("/prescription/:id")
+  .get(
+    authController.ensureAuthenticated,
+    recordController.getPrescriptionById
+  );
+router
   .route("/update/:id")
   .put(authController.ensureAuthenticated, recordController.updatePrescription);
 router
