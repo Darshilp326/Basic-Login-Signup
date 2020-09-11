@@ -6,5 +6,7 @@ router.route("/login").post(doctorController.loginDoctor);
 router
   .route("/patient/find")
   .post(authController.ensureAuthenticated, doctorController.findPatient);
-
+router
+  .route("/:id")
+  .get(authController.ensureAuthenticated, doctorController.getDoctorById);
 module.exports = router;

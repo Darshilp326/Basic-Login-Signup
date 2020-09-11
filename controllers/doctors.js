@@ -72,8 +72,17 @@ const findPatient = async (req, res) => {
   }
   res.status(200).json({ patient });
 };
+const getDoctorById = async (req, res) => {
+  const id = req.params.id;
+  const doctor = await Doctor.findById(id);
+  if (!doctor) {
+    return res.status(404).json({ msg: "Doctor not found" });
+  }
+  res.status(200).json({ doctor });
+};
 module.exports = {
   registerDoctor,
   loginDoctor,
   findPatient,
+  getDoctorById,
 };

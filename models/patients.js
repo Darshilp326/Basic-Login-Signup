@@ -20,6 +20,10 @@ const UserSchema = new Schema({
   accessToken: {
     type: String,
   },
+  code: {
+    type: Number,
+    default: 0,
+  },
 });
 
 const User = mongoose.model("User", UserSchema);
