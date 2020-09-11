@@ -18,7 +18,7 @@ const prescriptionSchema = new mongoose.Schema({
     {
       name: String,
       dosage: String,
-      numberOfDays: Number,
+      numberOfDays: String,
     },
   ],
   doctor: {
